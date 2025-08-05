@@ -13,6 +13,10 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   height: 100vh;
+
+  @media screen and (max-width: 768px) {
+    background-position: center;
+  }
 }
 
 #hoidle-logo {
@@ -42,17 +46,13 @@ body {
 .top-right {
   text-align: right;
 }
+
 #guess-form {
   max-width: 50%;
-  display: flex;
-}
-#guess-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .suggestions {
