@@ -6,6 +6,12 @@ body {
   height: 100vh;
 }
 
+@media screen and (max-width: 768px) {
+  body {
+    background-position: center;
+  }
+}
+
 #hoidle-logo {
   max-width: 30%;
   height: auto;
@@ -39,22 +45,90 @@ body {
 }
 
 #guess-form {
+  max-width: 50%;
   position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  #guess-form {
+    max-width: 100%;
+  }
+}
+
+#guess-button {
+  background-color: #30362e;
+  border: 1px solid white;
+  transition: transform 0.3s ease;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85), 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+#guess-button:hover {
+  transform: scale(1.05);
+}
+
+#guess-input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: 1px solid #353b33;
+  font-size: 16px;
+  background-color: #ced3cd;
+}
+
+#guess-input:focus {
+  outline: none;
+  box-shadow: 0 0 5px black;
 }
 
 .suggestions {
   position: absolute;
+  width: 100%;
   top: 100%;
   left: auto;
-  max-height: 200px;
+  max-height: 300px;
   overflow: scroll;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 3px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+#guess-container {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+}
+
+.fade-out-keep-space {
+  animation: fadeOutVisibility 1s forwards;
+}
+
+@keyframes fadeOutVisibility {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+  99% {
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.suggestion-item {
+  cursor: pointer;
+}
+
+.suggestion-itemhover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 body {
-  min-height: 130vh;
+  min-height: 120vh;
 }
 
 article {
@@ -71,4 +145,30 @@ article {
 
 #border-container {
   filter: brightness(0.85);
+  background-color: #333831;
+  border-radius: 15px;
+  padding: 1rem;
+  color: white;
+  box-shadow: 0 4px 8px black;
+  border: 1px solid #1c201b;
+}
+
+.guess-item {
+  padding: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 4px black;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.guess-success {
+  color: white;
+  background-color: #008a00;
+  border: 1px solid #30362e;
+}
+
+.guess-failure {
+  color: white;
+  background-color: #b30000;
+  border: 1px solid #990000;
 }

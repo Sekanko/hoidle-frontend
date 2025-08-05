@@ -10,8 +10,32 @@ async function getData(
 }
 
 async function getCountries() {
-  console.log(`Fetching countries from ${http}/data/allCountries`);
   return await getData(`${http}/data/allCountries`, "Could not get countries");
 }
 
-export { getCountries };
+async function getBorderCountryUrl() {
+  const data = await getData(
+    `${http}/game/control/dayCountryOfTheDay/BORDER`,
+    "Could not get border country"
+  );
+  return data.url;
+}
+
+async function checkBorderResult(guessCountry) {
+  const response = await fetch(`${http}/game/control/guessBorder`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(guessCountry),
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not check border result");
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+export { getCountries, checkBorderResult, getBorderCountryUrl };

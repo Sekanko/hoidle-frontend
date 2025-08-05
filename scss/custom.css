@@ -1,8 +1,15 @@
 body {
-  background-image: url("../img/hoi4bg.jpeg");
+  background-image: url("../../img/hoi4bg.jpeg");
   background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   height: 100vh;
-  overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    background-position: center;
+  }
 }
 
 #hoidle-logo {
@@ -37,8 +44,62 @@ body {
   text-align: right;
 }
 
-article {
-  margin-top: 9rem;
+#guess-form {
+  max-width: 50%;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  #guess-form {
+    max-width: 100%;
+  }
+}
+
+.suggestions {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: auto;
+  max-height: 300px;
+  overflow: scroll;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+#guess-container {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+}
+
+.fade-out-keep-space {
+  animation: fadeOutVisibility 1s forwards;
+}
+
+@keyframes fadeOutVisibility {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+  99% {
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.suggestion-item {
+  cursor: pointer;
+}
+
+.suggestion-itemhover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 article {

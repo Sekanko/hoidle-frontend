@@ -29,27 +29,27 @@
       <article class="text-center flex-column align-items-center mx-auto">
         <div
           id="border-container"
-          class="border border-light-subtle rounded bg-dark text-light p-4"
         >
           <h1>Guess the border!</h1>
           <img
-            src="borders-img/Afganistan.png"
+            src=""
             id="daily-border-img"
             alt="Opera user"
           />
         </div>
-        <form action="#" id="guess-form" class="d-flex mx-auto m-3 ">
+        <form action="#" id="guess-form" class="d-flex mx-auto m-3 " autocomplete="off">
           <div class="guess-input-group d-flex gap-2">
             <input type="text" id="guess-input" class="form-control" placeholder="Enter your guess" />
             <button type="submit" id="guess-button" class="btn btn-primary">Submit</button>
         </div>
-        </form>
         <div id="guess-container" class="mt-3">
-          <ul id="guess-list" class="list-group">
-          </ul>
+        </form>
+
       </article>
     </div>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="module" src="../common/js/guess-form.js"></script>
+     <script type="module" src="./js/submit-form.js"></script>
+    <script src="js/daily-img.js" type="module"></script>
+
   </body>
 </html>

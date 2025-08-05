@@ -1,7 +1,7 @@
 @import "../../common/scss/common.scss";
 
 body {
-  min-height: 130vh;
+  min-height: 120vh;
 }
 
 article {
@@ -18,4 +18,30 @@ article {
 
 #border-container {
   filter: brightness(0.85);
+  background-color: darken($greenMainColor, 1%);
+  border-radius: 15px;
+  padding: 1rem;
+  color: white;
+  box-shadow: 0 4px 8px rgb(0, 0, 0);
+  border: 1px solid darken($greenMainColor, 10%);
+}
+
+.guess-item {
+  padding: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 4px rgb(0, 0, 0);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.guess-success {
+  color: lighten($greenMainColor, 90%);
+  background-color: lighten(green, 2%);
+  border: 1px solid darken($greenMainColor, 2%);
+}
+
+.guess-failure {
+  color: lighten(red, 90%);
+  background-color: darken(red, 15%);
+  border: 1px solid darken(red, 20%);
 }

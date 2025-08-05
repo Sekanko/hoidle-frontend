@@ -1,7 +1,10 @@
 import { getCountries } from "./api.js";
 
-async function guessForm() {
-  const countries = await getCountries();
+var guessCountry;
+var attempts = 0;
+
+async function guessForm(checkGuessFunction) {
+  let countries = await getCountries();
 
   $("#guess-input").on("input", function () {
     const input = $(this).val();
@@ -11,26 +14,55 @@ async function guessForm() {
 
     if (input.length === 0) return;
 
-    console.log(input);
+    const liSuggestionClass =
+      "list-group-item bg-dark text-white suggestion-item";
+
     $(".guess-input-group").after(
       `<ul class="suggestions list-group">${
         suggestions.length > 0
           ? suggestions
               .map(
-                (country) => `<li class='list-group-item'>${country.name}</li>`
+                (country) =>
+                  `<li class="${liSuggestionClass}">${country.name}</li>`
               )
               .join("")
-          : "<li class='list-group-item no-country'>There's no such country</li>"
+          : `<li id='no-country' class='${liSuggestionClass}'>There's no such country</li>`
       }</ul>`
     );
-    $(document).on("click", ".suggestions .list-group-ite`m", function () {
-      const text = $(this).text();
-      if (text !== "There's no such country") {
-        $("#guess-input").val(text);
-        $(".suggestions").remove();
-        $("#guess-form")[0].submit();
+    $(document).on("click", ".suggestions .list-group-item", function () {
+      if ($(this).attr("id") !== "no-country") {
+        $("#guess-input").val($(this).text());
+        guessCountry = countries.find(
+          (country) => country.name === $(this).text()
+        );
+        $("#guess-form").trigger("submit");
       }
     });
+  });
+
+  $("#guess-form").on("submit", function (e) {
+    e.preventDefault();
+    const input = $("#guess-input").val().trim();
+    $("#guess-input").val("");
+    if (input.length > 0 && !countries.includes(guessCountry)) {
+      const firstSuggestion = $(".suggestions .list-group-item").first();
+      if (
+        firstSuggestion.length > 0 &&
+        firstSuggestion.attr("id") !== "no-country"
+      ) {
+        firstSuggestion[0].click();
+        return;
+      }
+    }
+    $(".suggestions").remove();
+
+    if (!guessCountry) return;
+
+    attempts++;
+    countries = countries.filter((country) => country !== guessCountry);
+
+    checkGuessFunction(guessCountry);
+    guessCountry = null;
   });
 }
 
@@ -50,4 +82,4 @@ function filterCountriesByName(name, countries) {
   });
 }
 
-guessForm();
+export default guessForm;
