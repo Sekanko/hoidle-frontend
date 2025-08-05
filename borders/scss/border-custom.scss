@@ -1,0 +1,21 @@
+@import "../../common/scss/common.scss";
+
+body {
+  min-height: 130vh;
+}
+
+article {
+  margin-top: 3rem;
+  max-width: 50%;
+}
+
+#daily-border-img {
+  width: 95%;
+  height: auto;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+}
+
+#border-container {
+  filter: brightness(0.85);
+}

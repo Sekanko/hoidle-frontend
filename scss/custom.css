@@ -11,7 +11,7 @@ body {
   background: linear-gradient(rgba(0, 0, 0, 0.4));
 }
 
-#sign-in-button {
+#profile-button {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -24,7 +24,7 @@ body {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85), 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-#sign-in-button:hover {
+#profile-button:hover {
   transform: scale(1.05);
 }
 
@@ -35,6 +35,10 @@ body {
 
 .top-right {
   text-align: right;
+}
+
+article {
+  margin-top: 9rem;
 }
 
 article {

@@ -1,47 +1,4 @@
-$darkenGradient: linear-gradient(rgba(0, 0, 0, 0.4));
-
-@mixin button-animation {
-  transition: transform 0.3s ease;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85), 0 2px 8px rgba(0, 0, 0, 0.5);
-  &:hover {
-    transform: scale(1.05);
-  }
-}
-
-body {
-  background-image: url("../img/hoi4bg.jpeg");
-  background-size: cover;
-  height: 100vh;
-  overflow: hidden;
-}
-
-#hoidle-logo {
-  max-width: 30%;
-  height: auto;
-  background: $darkenGradient;
-}
-
-#sign-in-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: rgb(53, 59, 51);
-  border: 1px solid white;
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-
-  @include button-animation;
-}
-
-.center-element {
-  text-align: center;
-  flex: 1;
-}
-
-.top-right {
-  text-align: right;
-}
+@import "common";
 
 article {
   margin-top: 9rem;
