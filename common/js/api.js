@@ -1,4 +1,4 @@
-const http = "http://localhost:8080";
+const http = "https://hoidle.onrender.com";
 
 async function getData(
   endpoint,
