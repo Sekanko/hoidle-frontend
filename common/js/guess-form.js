@@ -64,6 +64,10 @@ async function guessForm(checkGuessFunction) {
     checkGuessFunction(guessCountry);
     guessCountry = null;
   });
+
+  return new Promise((resolve) => {
+    resolve(Object.keys(countries[0]));
+  });
 }
 
 function filterCountriesByName(name, countries) {

@@ -21,8 +21,12 @@ async function getBorderCountryUrl() {
   return data.url;
 }
 
-async function checkBorderResult(guessCountry) {
-  const response = await fetch(`${http}/game/control/guessBorder`, {
+async function checkResult(
+  guessCountry,
+  endpoint,
+  errorMessage = "Could not check result"
+) {
+  const response = await fetch(`${http}${endpoint}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,11 +35,31 @@ async function checkBorderResult(guessCountry) {
   });
 
   if (!response.ok) {
-    throw new Error("Could not check border result");
+    throw new Error(errorMessage);
   }
 
-  const data = await response.json();
-  return data;
+  return await response.json();
 }
 
-export { getCountries, checkBorderResult, getBorderCountryUrl };
+async function checkClassicResult(guessCountry) {
+  return await checkResult(
+    guessCountry,
+    `/game/control/guessClassic`,
+    "Could not check classic guess"
+  );
+}
+
+async function checkBorderResult(guessCountry) {
+  return await checkResult(
+    guessCountry,
+    `/game/control/guessBorder`,
+    "Could not check border guess"
+  );
+}
+
+export {
+  getCountries,
+  checkBorderResult,
+  getBorderCountryUrl,
+  checkClassicResult,
+};

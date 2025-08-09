@@ -1,14 +1,9 @@
 import guessForm from "../../common/js/guess-form.js";
 import { checkBorderResult } from "../../common/js/api.js";
+import { winProcedure } from "../../common/js/win-func.js";
 
 async function checkGuessFunction(guessCountry) {
   const guessResult = await checkBorderResult(guessCountry);
-
-  if (guessResult) {
-    $("#guess-input").addClass("fade-out-keep-space");
-    $("#guess-button").addClass("fade-out-keep-space");
-    $("#guess-form").find("input, button").prop("disabled", true);
-  }
   const newGuess = $(
     `<div class="${
       guessResult ? "guess-item guess-success" : "guess-item guess-failure"
@@ -16,5 +11,9 @@ async function checkGuessFunction(guessCountry) {
   );
   $("#guess-container").prepend(newGuess);
   newGuess.slideDown(400);
+
+  if (guessResult) {
+    winProcedure("../classic", "../img/classic.png");
+  }
 }
 await guessForm(checkGuessFunction);

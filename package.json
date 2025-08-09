@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bootstrap": "^5.3.7",
+    "fitty": "^2.4.2",
     "jquery": "^3.7.1"
   }
 }
