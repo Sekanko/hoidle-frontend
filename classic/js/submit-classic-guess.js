@@ -3,7 +3,6 @@ import { checkClassicResult } from "../../common/js/api.js";
 import { prepareFieldForDisplay } from "../../common/js/prepare-data.js";
 import { fieldBackgroundClass } from "./static.js";
 import { winProcedure } from "../../common/js/win-func.js";
-
 import fitty from "../../node_modules/fitty/dist/fitty.module.js";
 
 function createTable(fields) {
@@ -52,7 +51,7 @@ async function checkGuessFunction(guessCountry) {
   }, 1);
 
   if (guessResult.every((color) => color === "GREEN")) {
-    winProcedure("../borders", "../img/classic.png");
+    winProcedure("../borders", "../img/borders.png");
   }
 }
 

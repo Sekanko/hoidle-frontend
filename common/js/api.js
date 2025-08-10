@@ -1,3 +1,5 @@
+import { loading, loaded } from "../../common/js/loading.js";
+
 const http = "https://hoidle.onrender.com";
 
 async function getData(
@@ -10,7 +12,13 @@ async function getData(
 }
 
 async function getCountries() {
-  return await getData(`${http}/data/allCountries`, "Could not get countries");
+  loading();
+  const data = await getData(
+    `${http}/data/allCountries`,
+    "Could not get countries"
+  );
+  loaded();
+  return data;
 }
 
 async function getBorderCountryUrl() {
