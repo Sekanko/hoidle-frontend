@@ -1,0 +1,19 @@
+@media screen and (max-width: 768px) {
+  body {
+    background-position: center;
+  }
+}
+
+#hoidle-logo {
+  max-width: 30%;
+  height: auto;
+  background: linear-gradient(rgba(0, 0, 0, 0.4));
+}
+.center-element {
+  text-align: center;
+  flex: 1;
+}
+
+header {
+  margin-bottom: 5rem;
+}
