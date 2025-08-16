@@ -7,7 +7,7 @@ const liSuggestionClass = "list-group-item bg-dark text-white suggestion-item";
 function GuessForm({ submitFunction }) {
   //api
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  let {
+  const {
     data: countries,
     error,
     isValidating,
@@ -39,7 +39,7 @@ function GuessForm({ submitFunction }) {
 
   return (
     <form id="guess-form" onSubmit={handler}>
-      <div className="guess-input-group">
+      <div className="guess-input-group d-flex gap-2">
         <input
           type="text"
           id="guess-input"
@@ -49,7 +49,11 @@ function GuessForm({ submitFunction }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
+        <button id="guess-button" className="btn btn-primary" type="submit">
+          Submit
+        </button>
       </div>
+
       {input && filteredCountries.length > 0 && (
         <ul className="suggestions list-group">
           {filteredCountries.map((country) => (

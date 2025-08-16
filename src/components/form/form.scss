@@ -1,5 +1,7 @@
-@import "../mode-link/mode-link.scss";
-$greenMainColor: rgb(29, 94, 34);
+@use "sass:color";
+@use "../mode-link/mode-link" as mode;
+
+$greenMainColor: rgb(53, 59, 51);
 
 #guess-form {
   max-width: 50%;
@@ -11,18 +13,19 @@ $greenMainColor: rgb(29, 94, 34);
 }
 
 #guess-button {
-  background-color: darken($greenMainColor, 2%);
+  background-color: color.adjust($greenMainColor, $lightness: -1%);
   border: 1px solid white;
 
-  @include button-animation;
+  @include mode.button-animation;
 }
+
 #guess-input {
   width: 100%;
   padding: 0.5rem;
   border-radius: 3px;
   border: 1px solid $greenMainColor;
   font-size: 16px;
-  background-color: lighten($greenMainColor, 60%);
+  background-color: color.adjust($greenMainColor, $lightness: 60%);
 
   &:focus {
     outline: none;
@@ -42,4 +45,12 @@ $greenMainColor: rgb(29, 94, 34);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   margin-top: 0.5rem;
+}
+
+.suggestion-item {
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(120%) !important;
+  }
 }

@@ -1,0 +1,41 @@
+@use "sass:color";
+$greenMainColor: rgb(53, 59, 51);
+
+#daily-border-img {
+  width: 95%;
+  height: auto;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+}
+
+#border-container {
+  max-width: 50%;
+  filter: brightness(0.85);
+  background-color: color.adjust($greenMainColor, $lightness: -1%);
+  border-radius: 15px;
+  padding: 1rem;
+  color: white;
+  box-shadow: 0 4px 8px rgb(0, 0, 0);
+  border: 1px solid color.adjust($greenMainColor, $lightness: -10%);
+  margin-bottom: 3rem;
+}
+
+.guess-item {
+  padding: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 4px rgb(0, 0, 0);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.guess-success {
+  color: color.adjust($greenMainColor, $lightness: 90%);
+  background-color: color.adjust(rgb(3, 116, 3), $lightness: 2%);
+  border: 1px solid color.adjust($greenMainColor, $lightness: -2%);
+}
+
+.guess-failure {
+  color: color.adjust(red, $lightness: 90%);
+  background-color: color.adjust(red, $lightness: -15%);
+  border: 1px solid color.adjust(red, $lightness: -20%);
+}
