@@ -4,7 +4,7 @@ import "./form.scss";
 
 const liSuggestionClass = "list-group-item bg-dark text-white suggestion-item";
 
-function GuessForm({ submitFunction }) {
+function GuessForm({ submitFunction, isDisabled }) {
   //api
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const {
@@ -48,8 +48,14 @@ function GuessForm({ submitFunction }) {
           autoComplete="off"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          disabled={isDisabled}
         />
-        <button id="guess-button" className="btn btn-primary" type="submit">
+        <button
+          id="guess-button"
+          className="btn btn-primary"
+          type="submit"
+          disabled={isDisabled}
+        >
           Submit
         </button>
       </div>

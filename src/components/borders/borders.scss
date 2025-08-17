@@ -20,12 +20,22 @@ $greenMainColor: rgb(53, 59, 51);
   margin-bottom: 3rem;
 }
 
+#guess-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .guess-item {
   padding: 1rem;
   border-radius: 0.25rem;
   box-shadow: 0 1px 4px rgb(0, 0, 0);
   margin-bottom: 1rem;
   font-weight: 500;
+  width: 100%;
+  max-width: 25%;
 }
 
 .guess-success {

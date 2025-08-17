@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useSWR from "swr";
 import GuessForm from "../form/form";
 import "./borders.scss";
+import ModeLink from "../mode-link/mode-link";
+import Win from "../win/win";
 function Borders() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const {
@@ -14,6 +16,7 @@ function Borders() {
   );
 
   const [guesses, setGuesses] = useState([]);
+  const [hasWon, setHasWon] = useState(false);
 
   if (error) return <div>Failed to load</div>;
   if (!country) return <div>Loading...</div>;
@@ -33,6 +36,10 @@ function Borders() {
     );
     const data = await response.json();
 
+    if (data) {
+      setHasWon(true);
+    }
+
     setGuesses((prewDivs) => [
       { countryName: selectedCountry.name, isCorrect: data },
       ...prewDivs,
@@ -49,7 +56,7 @@ function Borders() {
           alt="Something went wrong :( [Opera user ;)]"
         />
       </div>
-      <GuessForm submitFunction={submitHandler} />
+      <GuessForm submitFunction={submitHandler} isDisabled={hasWon} />
       <div id="guess-container">
         {guesses.length > 0 &&
           guesses.map((country) => (
@@ -63,6 +70,7 @@ function Borders() {
             </div>
           ))}
       </div>
+      {hasWon && <Win imgRoute={<ModeLink modeName={"classic"} />} />}
     </article>
   );
 }

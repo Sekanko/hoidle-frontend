@@ -1,0 +1,27 @@
+@use "sass:color";
+@use "../mode-link/mode-link" as mode;
+$greenMainColor: rgb(53, 59, 51);
+
+.win-ad {
+  margin: 6rem;
+
+  background-color: color.adjust($greenMainColor, $lightness: 10%);
+  padding: 20px;
+  border: 3px solid color.adjust($greenMainColor, $lightness: 5%);
+  color: rgb(212, 247, 212);
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px black;
+  scroll-margin-top: 200px;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  .mode-img {
+    max-height: 20rem;
+    width: auto;
+    border-radius: 10px;
+
+    @include mode.button-animation;
+  }
+}

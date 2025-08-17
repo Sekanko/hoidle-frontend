@@ -3,6 +3,8 @@ import GuessForm from "../form/form";
 import useSWR from "swr";
 import fitty from "fitty";
 import "./classic.scss";
+import Win from "../win/win";
+import ModeLink from "../mode-link/mode-link";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -25,6 +27,9 @@ function Classic() {
   );
 
   const [rows, setRows] = useState([]);
+  const [hasWon, setHasWon] = useState(false);
+  const [formDisabled, setFormDisabled] = useState(false);
+
   useEffect(() => {
     fitty(".fit-in", {
       minSize: 9,
@@ -48,11 +53,20 @@ function Classic() {
     );
     const results = await response.json();
     setRows((prevRows) => [{ country: selectedCountry, results }, ...prevRows]);
+
+    if (results.every((color) => color === "GREEN")) {
+      setFormDisabled(true);
+      const animationDuration = 0.5;
+      const lastTdDelay = (fields.length - 1) * 0.2;
+      const totalAnimationTime = (animationDuration + lastTdDelay) * 1000;
+
+      setTimeout(() => setHasWon(true), totalAnimationTime);
+    }
   };
 
   return (
     <article className="text-center d-flex flex-column align-items-center mx-auto">
-      <GuessForm submitFunction={handleSubmit} />
+      <GuessForm submitFunction={handleSubmit} isDisabled={formDisabled} />
       <div id="guess-container">
         <table>
           <thead>
@@ -86,6 +100,7 @@ function Classic() {
           </tbody>
         </table>
       </div>
+      {hasWon && <Win imgRoute={<ModeLink modeName={"borders"} />} />}
     </article>
   );
 }
