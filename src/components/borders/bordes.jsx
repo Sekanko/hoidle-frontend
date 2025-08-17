@@ -4,6 +4,8 @@ import GuessForm from "../form/form";
 import "./borders.scss";
 import ModeLink from "../mode-link/mode-link";
 import Win from "../win/win";
+import Loader from "../modals/loader/loader";
+import ErrorView from "../modals/error/error-view";
 function Borders() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const {
@@ -18,8 +20,8 @@ function Borders() {
   const [guesses, setGuesses] = useState([]);
   const [hasWon, setHasWon] = useState(false);
 
-  if (error) return <div>Failed to load</div>;
-  if (!country) return <div>Loading...</div>;
+  if (error) return <ErrorView error={error} />;
+  if (!country) return <Loader />;
 
   const imageSrc = `/borders-img/${country.url}`;
 
@@ -36,14 +38,13 @@ function Borders() {
     );
     const data = await response.json();
 
-    if (data) {
-      setHasWon(true);
-    }
-
     setGuesses((prewDivs) => [
       { countryName: selectedCountry.name, isCorrect: data },
       ...prewDivs,
     ]);
+    if (data) {
+      setTimeout(() => setHasWon(true), 500);
+    }
   };
 
   return (
@@ -59,12 +60,12 @@ function Borders() {
       <GuessForm submitFunction={submitHandler} isDisabled={hasWon} />
       <div id="guess-container">
         {guesses.length > 0 &&
-          guesses.map((country) => (
+          guesses.map((country, index) => (
             <div
               key={country.countryName}
               className={`guess-item ${
                 country.isCorrect ? "guess-success" : "guess-failure"
-              }`}
+              } ${index === 0 ? "slide-down" : ""}`}
             >
               {country.countryName}
             </div>

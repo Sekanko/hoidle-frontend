@@ -27,7 +27,7 @@ function GuessForm({ submitFunction, isDisabled }) {
 
   const handler = (e) => {
     e.preventDefault();
-    if (filteredCountries.length > 0) {
+    if (filteredCountries.length > 0 && input) {
       const selectedCountry = filteredCountries[0];
       submitFunction(selectedCountry);
       setAvailableCountries((prev) =>
@@ -60,21 +60,32 @@ function GuessForm({ submitFunction, isDisabled }) {
         </button>
       </div>
 
-      {input && filteredCountries.length > 0 && (
+      {input && (
         <ul className="suggestions list-group">
-          {filteredCountries.map((country) => (
+          {filteredCountries.length > 0 ? (
+            filteredCountries.map((country) => (
+              <li
+                key={country.name}
+                className={liSuggestionClass}
+                onClick={() => {
+                  setInput(country.name);
+                  submitFunction(country);
+                  setInput("");
+                }}
+              >
+                {country.name}
+              </li>
+            ))
+          ) : (
             <li
-              key={country.name}
+              key="no-country"
+              id="no-country"
               className={liSuggestionClass}
-              onClick={() => {
-                setInput(country.name);
-                submitFunction(country);
-                setInput("");
-              }}
+              onClick={() => setInput("")}
             >
-              {country.name}
+              {"There's no such country"}
             </li>
-          ))}
+          )}
         </ul>
       )}
     </form>

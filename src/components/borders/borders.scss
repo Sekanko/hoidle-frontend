@@ -36,6 +36,8 @@ $greenMainColor: rgb(53, 59, 51);
   font-weight: 500;
   width: 100%;
   max-width: 25%;
+
+  transition: all 0.4s ease;
 }
 
 .guess-success {

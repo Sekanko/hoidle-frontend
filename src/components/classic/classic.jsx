@@ -5,6 +5,8 @@ import fitty from "fitty";
 import "./classic.scss";
 import Win from "../win/win";
 import ModeLink from "../mode-link/mode-link";
+import Loader from "../modals/loader/loader";
+import ErrorView from "../modals/error/error-view";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -37,8 +39,8 @@ function Classic() {
     });
   }, [rows]);
 
-  if (error) return <div>Failed to load</div>;
-  if (!fields) return <div>Loading...</div>;
+  if (error) return <ErrorView error={new Error("This is test message")} />;
+  if (!fields) return <Loader />;
 
   const handleSubmit = async (selectedCountry) => {
     const response = await fetch(
