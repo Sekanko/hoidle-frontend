@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./components/home/home";
 import Classic from "./components/classic/classic";
 import Borders from "./components/borders/bordes";
-import Header from "./components/header/Header";
+import HoidleHeader from "./components/header/HoidleHeader";
 
 function App() {
   return (

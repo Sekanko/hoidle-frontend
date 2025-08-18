@@ -3,7 +3,7 @@ import logo from "../../assets/transparentLogo.png";
 import "./header.scss";
 import { Link } from "react-router-dom";
 
-function Header() {
+function HoidleHeader() {
   return (
     <header className="header mt-3">
       <div className="d-flex justify-content-center center-element">
@@ -20,4 +20,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default HoidleHeader;
