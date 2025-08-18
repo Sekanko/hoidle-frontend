@@ -19,8 +19,11 @@ function Borders() {
 
   const [guesses, setGuesses] = useState([]);
   const [hasWon, setHasWon] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   if (error) return <ErrorView error={error} />;
+  if (submitError) return <ErrorView error={submitError} />;
+
   if (!country) return <Loader />;
 
   const imageSrc = `/borders-img/${country.url}`;
@@ -36,6 +39,12 @@ function Borders() {
         body: JSON.stringify(selectedCountry),
       }
     );
+
+    if (!response.ok) {
+      setSubmitError(new Error("Stable backend - guess result error"));
+      return;
+    }
+
     const data = await response.json();
 
     setGuesses((prewDivs) => [

@@ -1,8 +1,7 @@
 import React from "react";
 import "./error-view.scss";
 
-function ErrorView(error) {
-  error = new Error("Czołem");
+function ErrorView({ error }) {
   return (
     <div className="overlay">
       <div className="error-view">

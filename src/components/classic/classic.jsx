@@ -31,6 +31,7 @@ function Classic() {
   const [rows, setRows] = useState([]);
   const [hasWon, setHasWon] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   useEffect(() => {
     fitty(".fit-in", {
@@ -39,8 +40,9 @@ function Classic() {
     });
   }, [rows]);
 
-  if (error) return <ErrorView error={new Error()} />;
+  if (error) return <ErrorView error={error} />;
   if (!fields) return <Loader />;
+  if (submitError) return <ErrorView error={submitError} />;
 
   const handleSubmit = async (selectedCountry) => {
     const response = await fetch(
@@ -53,6 +55,12 @@ function Classic() {
         body: JSON.stringify(selectedCountry),
       }
     );
+
+    if (!response.ok) {
+      setSubmitError(new Error("Stable backend - guess result error"));
+      return;
+    }
+
     const results = await response.json();
     setRows((prevRows) => [{ country: selectedCountry, results }, ...prevRows]);
 
