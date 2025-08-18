@@ -8,7 +8,7 @@ import HoidleHeader from "./components/header/HoidleHeader";
 function App() {
   return (
     <>
-      <Header />
+      <HoidleHeader />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/classic" element={<Classic />} />
