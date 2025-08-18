@@ -39,7 +39,7 @@ function Classic() {
     });
   }, [rows]);
 
-  if (error) return <ErrorView error={new Error("This is test message")} />;
+  if (error) return <ErrorView error={new Error()} />;
   if (!fields) return <Loader />;
 
   const handleSubmit = async (selectedCountry) => {

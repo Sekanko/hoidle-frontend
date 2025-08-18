@@ -3,8 +3,6 @@ import logo from "../../assets/transparentLogo.png";
 import "./header.scss";
 import { Link } from "react-router-dom";
 
-// import "./Header.scss";
-
 function Header() {
   return (
     <header className="header mt-3">
