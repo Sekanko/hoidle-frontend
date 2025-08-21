@@ -61,7 +61,6 @@ function Classic() {
         { country: selectedCountry, results },
         ...prevRows,
       ]);
-      console.log(results);
 
       if (results.every((color) => color === "GREEN")) {
         setFormDisabled(true);
