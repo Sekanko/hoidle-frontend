@@ -1,31 +1,40 @@
 import React, { useState, useEffect } from "react";
-import useSWR from "swr";
 import "./form.scss";
+import ApiClient from "../../services/api-client";
+import ErrorView from "../modals/error/error-view";
+import Loader from "../modals/loader/loader";
 
 const liSuggestionClass = "list-group-item bg-dark text-white suggestion-item";
+const apiClient = ApiClient.getInstance();
 
 function GuessForm({ submitFunction, isDisabled }) {
-  //api
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const {
-    data: countries,
-    error,
-    isValidating,
-  } = useSWR("https://hoidle.onrender.com/data/allCountries", fetcher);
-
-  //use states
   const [input, setInput] = useState("");
+  const [countries, setCountries] = useState(null);
   const [availableCountries, setAvailableCountries] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const data = await apiClient.get("/data/allCountries");
+        setCountries(data);
+      } catch (e) {
+        setError(e);
+      }
+    };
+    fetchCountries();
+  }, []);
+
   useEffect(() => {
     if (countries) setAvailableCountries(countries);
   }, [countries]);
 
-  if (error) return <div>Failed to load</div>;
-  if (!countries) return <div>Loading...</div>;
+  if (error) return <ErrorView error={error} />;
+  if (!countries) return <Loader />;
 
   const filteredCountries = filterCountriesByName(input, availableCountries);
 
-  const handler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (filteredCountries.length > 0 && input) {
       const selectedCountry = filteredCountries[0];
@@ -38,7 +47,7 @@ function GuessForm({ submitFunction, isDisabled }) {
   };
 
   return (
-    <form id="guess-form" onSubmit={handler}>
+    <form id="guess-form" onSubmit={submitHandler}>
       <div className="guess-input-group d-flex gap-2">
         <input
           type="text"

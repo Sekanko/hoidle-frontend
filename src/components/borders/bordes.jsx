@@ -1,58 +1,52 @@
 import React, { useState, useEffect } from "react";
-import useSWR from "swr";
 import GuessForm from "../form/form";
 import "./borders.scss";
 import ModeLink from "../mode-link/mode-link";
 import Win from "../win/win";
 import Loader from "../modals/loader/loader";
 import ErrorView from "../modals/error/error-view";
-function Borders() {
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const {
-    data: country,
-    error,
-    isValidating,
-  } = useSWR(
-    "https://hoidle.onrender.com/game/control/dayCountryOfTheDay/BORDER",
-    fetcher
-  );
+import ApiClient from "../../services/api-client";
 
+const apiClient = ApiClient.getInstance();
+
+function Borders() {
   const [guesses, setGuesses] = useState([]);
   const [hasWon, setHasWon] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
+  const [error, setError] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null);
+
+  useEffect(() => {
+    const fetchCountry = async () => {
+      try {
+        const country = await apiClient.get(
+          "/game/control/dayCountryOfTheDay/BORDER"
+        );
+        setImageSrc(`/borders-img/${country.url}`);
+      } catch (e) {
+        setError(e);
+      }
+    };
+    fetchCountry();
+  }, []);
 
   if (error) return <ErrorView error={error} />;
-  if (submitError) return <ErrorView error={submitError} />;
-
-  if (!country) return <Loader />;
-
-  const imageSrc = `/borders-img/${country.url}`;
+  if (!imageSrc) return <Loader />;
 
   const submitHandler = async (selectedCountry) => {
-    const response = await fetch(
-      "https://hoidle.onrender.com/game/control/guessBorder",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(selectedCountry),
+    try {
+      const data = await apiClient.post(
+        "/game/control/guessBorder",
+        selectedCountry
+      );
+      setGuesses((prewDivs) => [
+        { countryName: selectedCountry.name, isCorrect: data },
+        ...prewDivs,
+      ]);
+      if (data) {
+        setTimeout(() => setHasWon(true), 500);
       }
-    );
-
-    if (!response.ok) {
-      setSubmitError(new Error("Stable backend - guess result error"));
-      return;
-    }
-
-    const data = await response.json();
-
-    setGuesses((prewDivs) => [
-      { countryName: selectedCountry.name, isCorrect: data },
-      ...prewDivs,
-    ]);
-    if (data) {
-      setTimeout(() => setHasWon(true), 500);
+    } catch (e) {
+      setError(e);
     }
   };
 

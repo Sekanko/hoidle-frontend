@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import GuessForm from "../form/form";
-import useSWR from "swr";
 import fitty from "fitty";
 import "./classic.scss";
 import Win from "../win/win";
 import ModeLink from "../mode-link/mode-link";
 import Loader from "../modals/loader/loader";
 import ErrorView from "../modals/error/error-view";
+import ApiClient from "../../services/api-client";
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+const apiClient = ApiClient.getInstance();
 
 const fieldBackgroundClass = {
   GREEN: "correct",
@@ -19,19 +19,25 @@ const fieldBackgroundClass = {
 };
 
 function Classic() {
-  const {
-    data: fields,
-    error,
-    isValidating,
-  } = useSWR(
-    "https://hoidle.onrender.com/game/control/getCountryFields",
-    fetcher
-  );
-
   const [rows, setRows] = useState([]);
   const [hasWon, setHasWon] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [fields, setFields] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFields = async () => {
+      try {
+        const data = await apiClient.get("/game/control/getCountryFields");
+        setFields(data);
+      } catch (e) {
+        setError(e);
+      }
+    };
+
+    fetchFields();
+  }, []);
 
   useEffect(() => {
     fitty(".fit-in", {
@@ -45,32 +51,28 @@ function Classic() {
   if (submitError) return <ErrorView error={submitError} />;
 
   const handleSubmit = async (selectedCountry) => {
-    const response = await fetch(
-      "https://hoidle.onrender.com/game/control/guessClassic",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(selectedCountry),
+    try {
+      const results = await apiClient.post(
+        "/game/control/guessClassic",
+        selectedCountry
+      );
+
+      setRows((prevRows) => [
+        { country: selectedCountry, results },
+        ...prevRows,
+      ]);
+      console.log(results);
+
+      if (results.every((color) => color === "GREEN")) {
+        setFormDisabled(true);
+        const animationDuration = 0.5;
+        const lastTdDelay = (fields.length - 1) * 0.2;
+        const totalAnimationTime = (animationDuration + lastTdDelay) * 1000;
+
+        setTimeout(() => setHasWon(true), totalAnimationTime);
       }
-    );
-
-    if (!response.ok) {
-      setSubmitError(new Error("Stable backend - guess result error"));
-      return;
-    }
-
-    const results = await response.json();
-    setRows((prevRows) => [{ country: selectedCountry, results }, ...prevRows]);
-
-    if (results.every((color) => color === "GREEN")) {
-      setFormDisabled(true);
-      const animationDuration = 0.5;
-      const lastTdDelay = (fields.length - 1) * 0.2;
-      const totalAnimationTime = (animationDuration + lastTdDelay) * 1000;
-
-      setTimeout(() => setHasWon(true), totalAnimationTime);
+    } catch (e) {
+      setError(e);
     }
   };
 
