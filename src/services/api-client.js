@@ -38,8 +38,14 @@ class ApiClient {
       throw new Error(
         `Api error at ${endpoint}: ${response.status} ${response.statusText}`
       );
+    const contentType = response.headers.get("content-type");
+    let data;
 
-    const data = await response.json();
+    if (contentType && contentType.includes("application/json")) {
+      data = await response.json();
+    } else {
+      data = await response.text();
+    }
 
     return data;
   }

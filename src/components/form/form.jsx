@@ -16,7 +16,7 @@ function GuessForm({ submitFunction, isDisabled }) {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const data = await apiClient.get("/data/allCountries");
+        const data = await apiClient.get("/data/countries");
         setCountries(data);
       } catch (e) {
         setError(e);

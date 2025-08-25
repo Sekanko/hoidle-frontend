@@ -18,10 +18,8 @@ function Borders() {
   useEffect(() => {
     const fetchCountry = async () => {
       try {
-        const country = await apiClient.get(
-          "/game/control/dayCountryOfTheDay/BORDER"
-        );
-        setImageSrc(`/borders-img/${country.url}`);
+        const countryImgUrl = await apiClient.get("/data/dailyBorderUrl");
+        setImageSrc(`/borders-img/${countryImgUrl}`);
       } catch (e) {
         setError(e);
       }
@@ -34,10 +32,7 @@ function Borders() {
 
   const submitHandler = async (selectedCountry) => {
     try {
-      const data = await apiClient.post(
-        "/game/control/guessBorder",
-        selectedCountry
-      );
+      const data = await apiClient.post("/game/guess/BORDER", selectedCountry);
       setGuesses((prewDivs) => [
         { countryName: selectedCountry.name, isCorrect: data },
         ...prewDivs,

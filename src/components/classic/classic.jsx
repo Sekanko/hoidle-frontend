@@ -29,8 +29,8 @@ function Classic() {
   useEffect(() => {
     const fetchFields = async () => {
       try {
-        const data = await apiClient.get("/game/control/getCountryFields");
-        setFields(data);
+        const data = await apiClient.get("/data/countryFields");
+        setFields(data.filter((s) => s !== "id" && s !== "url"));
       } catch (e) {
         setError(e);
       }
@@ -53,7 +53,7 @@ function Classic() {
   const handleSubmit = async (selectedCountry) => {
     try {
       const results = await apiClient.post(
-        "/game/control/guessClassic",
+        "/game/guess/classicMode",
         selectedCountry
       );
 
@@ -62,7 +62,7 @@ function Classic() {
         ...prevRows,
       ]);
 
-      if (results.every((color) => color === "GREEN")) {
+      if (Object.values(results).every((color) => color === "GREEN")) {
         setFormDisabled(true);
         const animationDuration = 0.5;
         const lastTdDelay = (fields.length - 1) * 0.2;
@@ -94,9 +94,9 @@ function Classic() {
                 {fields.map((field, colIndex) => (
                   <td
                     key={rowIndex + "-" + colIndex + "-" + row.country.name}
-                    className={`${
-                      fieldBackgroundClass[row.results[colIndex]]
-                    } ${rowIndex === 0 ? "slide-down" : ""}`}
+                    className={`${fieldBackgroundClass[row.results[field]]} ${
+                      rowIndex === 0 ? "slide-down" : ""
+                    }`}
                     style={{ animationDelay: `${colIndex * 0.2}s` }}
                   >
                     <div className="centerContainer">
