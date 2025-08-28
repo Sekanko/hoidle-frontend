@@ -60,7 +60,7 @@ function Borders() {
             </div>
           ))}
       </div>
-      {hasWon && <Win imgRoute={<ModeLink modeName={"classic"} />} />}
+      {hasWon && <Win modeName={"classic"} />}
     </article>
   );
 }

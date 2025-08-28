@@ -3,7 +3,6 @@ import GuessForm from "../form/form";
 import fitty from "fitty";
 import "./classic.scss";
 import Win from "../win/win";
-import ModeLink from "../mode-link/mode-link";
 import Loader from "../modals/loader/loader";
 import ErrorView from "../modals/error/error-view";
 import ApiClient from "../../services/api-client";
@@ -98,7 +97,7 @@ function Classic() {
           </tbody>
         </table>
       </div>
-      {hasWon && <Win imgRoute={<ModeLink modeName={"borders"} />} />}
+      {hasWon && <Win modeName={"borders"} />}
     </article>
   );
 }

@@ -1,24 +1,25 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./win.scss";
+import ModeLink from "../mode-link/mode-link";
 
-function Win({ imgRoute }) {
+function Win({ modeName }) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const winRef = useRef(null);
 
   useEffect(() => {
-    if (winRef.current) {
-      setTimeout(() => {
-        winRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }, 50);
+    if (isLoaded && winRef.current) {
+      winRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
-  }, []);
+  }, [isLoaded]);
+
   return (
     <div ref={winRef} className="win-ad">
       <h1>You win!</h1>
       <h2>Check out the other mode</h2>
-      {imgRoute}
+      <ModeLink modeName={modeName} onReady={() => setIsLoaded(true)} />
     </div>
   );
 }
