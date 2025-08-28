@@ -3,27 +3,15 @@ import "./form.scss";
 import ApiClient from "../../services/api-client";
 import ErrorView from "../modals/error/error-view";
 import Loader from "../modals/loader/loader";
+import useApiData from "../../hooks/use-api-data";
 
 const liSuggestionClass = "list-group-item bg-dark text-white suggestion-item";
 const apiClient = ApiClient.getInstance();
 
 function GuessForm({ submitFunction, isDisabled }) {
   const [input, setInput] = useState("");
-  const [countries, setCountries] = useState(null);
   const [availableCountries, setAvailableCountries] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const data = await apiClient.get("/data/countries");
-        setCountries(data);
-      } catch (e) {
-        setError(e);
-      }
-    };
-    fetchCountries();
-  }, []);
+  const [countries, error, setError] = useApiData("/data/countries");
 
   useEffect(() => {
     if (countries) setAvailableCountries(countries);

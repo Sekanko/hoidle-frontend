@@ -6,26 +6,17 @@ import Win from "../win/win";
 import Loader from "../modals/loader/loader";
 import ErrorView from "../modals/error/error-view";
 import ApiClient from "../../services/api-client";
+import useApiData from "../../hooks/use-api-data";
 
 const apiClient = ApiClient.getInstance();
 
 function Borders() {
   const [guesses, setGuesses] = useState([]);
   const [hasWon, setHasWon] = useState(false);
-  const [error, setError] = useState(null);
-  const [imageSrc, setImageSrc] = useState(null);
-
-  useEffect(() => {
-    const fetchCountry = async () => {
-      try {
-        const countryImgUrl = await apiClient.get("/data/dailyBorderUrl");
-        setImageSrc(`/borders-img/${countryImgUrl}`);
-      } catch (e) {
-        setError(e);
-      }
-    };
-    fetchCountry();
-  }, []);
+  const [imageSrc, error, setError] = useApiData(
+    "/data/dailyBorderUrl",
+    (countryImgUrl) => `/borders-img/${countryImgUrl}`
+  );
 
   if (error) return <ErrorView error={error} />;
   if (!imageSrc) return <Loader />;

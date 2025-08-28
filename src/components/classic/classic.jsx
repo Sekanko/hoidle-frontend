@@ -7,6 +7,7 @@ import ModeLink from "../mode-link/mode-link";
 import Loader from "../modals/loader/loader";
 import ErrorView from "../modals/error/error-view";
 import ApiClient from "../../services/api-client";
+import useApiData from "../../hooks/use-api-data";
 
 const apiClient = ApiClient.getInstance();
 
@@ -22,22 +23,9 @@ function Classic() {
   const [rows, setRows] = useState([]);
   const [hasWon, setHasWon] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
-  const [fields, setFields] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchFields = async () => {
-      try {
-        const data = await apiClient.get("/data/countryFields");
-        setFields(data.filter((s) => s !== "id" && s !== "url"));
-      } catch (e) {
-        setError(e);
-      }
-    };
-
-    fetchFields();
-  }, []);
+  const [fields, error, setError] = useApiData("/data/countryFields", (data) =>
+    data.filter((s) => s !== "id" && s !== "url")
+  );
 
   useEffect(() => {
     fitty(".fit-in", {
@@ -48,7 +36,6 @@ function Classic() {
 
   if (error) return <ErrorView error={error} />;
   if (!fields) return <Loader />;
-  if (submitError) return <ErrorView error={submitError} />;
 
   const handleSubmit = async (selectedCountry) => {
     try {
