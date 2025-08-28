@@ -5,11 +5,18 @@
     transform: scale(1.05);
   }
 }
+.nav-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .nav-link {
+    width: 45%;
+  }
+}
 
 .mode-img {
-  width: 45%;
+  width: 100%;
   height: auto;
   border-radius: 3px;
-
   @include button-animation;
 }
