@@ -1,12 +1,11 @@
 body {
   background-image: url("assets/hoi4bg.jpeg");
   background-size: cover;
+
   background-attachment: fixed;
   background-repeat: no-repeat;
-}
-
-@media screen and (max-width: 768px) {
-  body {
+  background-position: center 0;
+  @media (max-width: 768px) {
     background-position: center;
   }
 }

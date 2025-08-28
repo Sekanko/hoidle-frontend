@@ -20,11 +20,28 @@
 
 #guess-container {
   position: static !important;
+
   max-width: 90%;
-  margin-top: 2rem;
+  margin: 2rem 0 0 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media (max-width: 700px) {
+    display: block !important;
+  }
 
   table {
     width: 100%;
+    min-width: 60rem;
+    max-width: 82rem;
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 10px 10px;

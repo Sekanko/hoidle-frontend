@@ -18,6 +18,10 @@ $greenMainColor: rgb(53, 59, 51);
   box-shadow: 0 4px 8px rgb(0, 0, 0);
   border: 1px solid color.adjust($greenMainColor, $lightness: -10%);
   margin-bottom: 3rem;
+
+  @media (max-width: 700px) {
+    max-width: 90%;
+  }
 }
 
 #guess-container {
@@ -35,9 +39,13 @@ $greenMainColor: rgb(53, 59, 51);
   margin-bottom: 1rem;
   font-weight: 500;
   width: 100%;
-  max-width: 25%;
+  max-width: min(22rem, 25%);
 
   transition: all 0.4s ease;
+
+  @media (max-width: 700px) {
+    max-width: 90%;
+  }
 }
 
 .guess-success {
