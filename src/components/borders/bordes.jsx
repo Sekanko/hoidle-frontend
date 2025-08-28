@@ -52,7 +52,7 @@ function Borders() {
         <img
           id="daily-border-img"
           src={[imageSrc]}
-          alt="Something went wrong :( [Opera user ;)]"
+          alt="Something went wrong :("
         />
       </div>
       <GuessForm submitFunction={submitHandler} isDisabled={hasWon} />
