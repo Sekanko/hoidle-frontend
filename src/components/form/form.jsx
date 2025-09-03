@@ -5,16 +5,27 @@ import ErrorView from "../modals/error/error-view";
 import Loader from "../modals/loader/loader";
 import useApiData from "../../hooks/use-api-data";
 
+import { pushStorageArray } from "../utils/set-storage-item";
+
 const liSuggestionClass = "list-group-item bg-dark text-white suggestion-item";
 const apiClient = ApiClient.getInstance();
 
-function GuessForm({ submitFunction, isDisabled }) {
+function GuessForm({ submitFunction, isDisabled, storageItemName }) {
   const [input, setInput] = useState("");
   const [availableCountries, setAvailableCountries] = useState([]);
   const [countries, error, setError] = useApiData("/data/countries");
 
   useEffect(() => {
-    if (countries) setAvailableCountries(countries);
+    let usedCountries;
+    const usedCountriesStorage = localStorage.getItem(storageItemName);
+    if (usedCountriesStorage) {
+      usedCountries = JSON.parse(usedCountriesStorage);
+    }
+
+    if (countries)
+      setAvailableCountries(
+        countries.filter((c) => !usedCountries?.includes(c.name))
+      );
   }, [countries]);
 
   if (error) return <ErrorView error={error} />;
@@ -24,9 +35,11 @@ function GuessForm({ submitFunction, isDisabled }) {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     if (filteredCountries.length > 0 && input) {
       const selectedCountry = filteredCountries[0];
       submitFunction(selectedCountry);
+      pushStorageArray(storageItemName, selectedCountry.name);
       setAvailableCountries((prev) =>
         prev.filter((country) => country !== selectedCountry)
       );
@@ -64,10 +77,9 @@ function GuessForm({ submitFunction, isDisabled }) {
               <li
                 key={country.name}
                 className={liSuggestionClass}
-                onClick={() => {
+                onClick={(e) => {
                   setInput(country.name);
-                  submitFunction(country);
-                  setInput("");
+                  e.currentTarget.closest("form").requestSubmit();
                 }}
               >
                 {country.name}

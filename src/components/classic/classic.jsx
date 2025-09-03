@@ -7,6 +7,10 @@ import Loader from "../modals/loader/loader";
 import ErrorView from "../modals/error/error-view";
 import ApiClient from "../../services/api-client";
 import useApiData from "../../hooks/use-api-data";
+import prepareFieldForDisplay from "../utils/prepare-value";
+import { setStorageItem } from "../utils/set-storage-item";
+import { getDateFromWarsaw, isDateSameInWarsaw } from "../utils/date";
+import { storageItems } from "../utils/constants/storage-item-names";
 
 const apiClient = ApiClient.getInstance();
 
@@ -22,16 +26,42 @@ function Classic() {
   const [rows, setRows] = useState([]);
   const [hasWon, setHasWon] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
+  const [justGuessed, setJustGuessed] = useState(false);
   const [fields, error, setError] = useApiData("/data/countryFields", (data) =>
     data.filter((s) => s !== "id" && s !== "url")
   );
+
+  useEffect(() => {
+    const savedRows = localStorage.getItem(storageItems.CLASSIC_ROWS);
+    const savedHasWon = localStorage.getItem(storageItems.CLASSIC_HAS_WON);
+    const savedPlayDate = localStorage.getItem(storageItems.PLAY_DATE);
+
+    if (savedPlayDate && !isDateSameInWarsaw(savedPlayDate)) {
+      Object.values(storageItems).forEach((item) =>
+        localStorage.removeItem(item)
+      );
+    }
+
+    if (savedRows) setRows(JSON.parse(savedRows));
+    if (savedHasWon) setHasWon(JSON.parse(savedHasWon));
+  }, []);
+
+  useEffect(() => {
+    if (rows.length > 0) {
+      setStorageItem(storageItems.CLASSIC_ROWS, rows);
+      setStorageItem(storageItems.PLAY_DATE, getDateFromWarsaw());
+    }
+    if (hasWon) {
+      setStorageItem(storageItems.CLASSIC_HAS_WON, hasWon);
+    }
+  }, [rows, hasWon]);
 
   useEffect(() => {
     fitty(".fit-in", {
       minSize: 9,
       maxSize: 18,
     });
-  }, [rows]);
+  }, [[], rows]);
 
   if (error) return <ErrorView error={error} />;
   if (!fields) return <Loader />;
@@ -48,6 +78,8 @@ function Classic() {
         ...prevRows,
       ]);
 
+      setJustGuessed(true);
+
       if (Object.values(results).every((color) => color === "GREEN")) {
         setFormDisabled(true);
         const animationDuration = 0.5;
@@ -63,7 +95,12 @@ function Classic() {
 
   return (
     <article className="text-center d-flex flex-column align-items-center mx-auto">
-      <GuessForm submitFunction={handleSubmit} isDisabled={formDisabled} />
+      <button onClick={() => localStorage.clear()}>Wyczyść localStorage</button>
+      <GuessForm
+        submitFunction={handleSubmit}
+        isDisabled={formDisabled}
+        storageItemName={storageItems.CLASSIC_GUESSES}
+      />
       <div id="guess-container">
         <table>
           <thead>
@@ -81,7 +118,7 @@ function Classic() {
                   <td
                     key={rowIndex + "-" + colIndex + "-" + row.country.name}
                     className={`${fieldBackgroundClass[row.results[field]]} ${
-                      rowIndex === 0 ? "slide-down" : ""
+                      rowIndex === 0 && justGuessed ? "slide-down" : ""
                     }`}
                     style={{ animationDelay: `${colIndex * 0.2}s` }}
                   >
@@ -102,31 +139,4 @@ function Classic() {
   );
 }
 
-function prepareFieldForDisplay(field) {
-  if (typeof field === "number") {
-    return field;
-  }
-
-  let displayValue = field;
-
-  if (Array.isArray(displayValue)) {
-    displayValue = displayValue.map((v) => prepareValue(v));
-
-    displayValue = displayValue.join(", ");
-  } else {
-    displayValue = prepareValue(displayValue);
-  }
-
-  return displayValue;
-}
-
-function prepareValue(value) {
-  let returnValue = String(value).replace(/([a-z])([A-Z])/g, "$1 $2");
-  returnValue = returnValue.trim().replaceAll("_", " ").toLowerCase();
-  returnValue = returnValue
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-  return returnValue;
-}
 export default Classic;
