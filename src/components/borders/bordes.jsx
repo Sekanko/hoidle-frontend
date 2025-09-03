@@ -47,7 +47,7 @@ function Borders() {
         />
       </div>
       <GuessForm submitFunction={submitHandler} isDisabled={hasWon} />
-      <div id="guess-container">
+      <div id="guess-container-border">
         {guesses.length > 0 &&
           guesses.map((country, index) => (
             <div

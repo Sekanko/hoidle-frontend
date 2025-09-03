@@ -101,7 +101,7 @@ function Classic() {
         isDisabled={formDisabled}
         storageItemName={storageItems.CLASSIC_GUESSES}
       />
-      <div id="guess-container">
+      <div id="guess-container-classic">
         <table>
           <thead>
             <tr>

@@ -24,12 +24,13 @@ $greenMainColor: rgb(53, 59, 51);
   }
 }
 
-#guess-container {
+#guess-container-border {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding-top: 1rem;
 }
 
 .guess-item {
@@ -39,7 +40,7 @@ $greenMainColor: rgb(53, 59, 51);
   margin-bottom: 1rem;
   font-weight: 500;
   width: 100%;
-  max-width: min(22rem, 25%);
+  max-width: max(22rem, 25%);
 
   transition: all 0.4s ease;
 
