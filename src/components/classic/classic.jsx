@@ -50,7 +50,7 @@ function Classic() {
 
   useEffect(() => {
     fitty(".fit-in", {
-      minSize: 9,
+      minSize: 7,
       maxSize: 18,
     });
   }, [[], rows]);
@@ -90,7 +90,7 @@ function Classic() {
       <GuessForm
         submitFunction={handleSubmit}
         isDisabled={formDisabled}
-        storageItemName={storageItems.CLASSIC_GUESSES}
+        previousGuessesStorageName={storageItems.CLASSIC_GUESSES}
       />
       <div id="guess-container-classic">
         <table>

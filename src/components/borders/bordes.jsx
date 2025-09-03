@@ -68,7 +68,7 @@ function Borders() {
       <GuessForm
         submitFunction={submitHandler}
         isDisabled={hasWon}
-        storageItemName={storageItems.BORDER_GUESSES}
+        previousGuessesStorageName={storageItems.BORDER_GUESSES}
       />
       <div id="guess-container-border">
         {guesses.length > 0 &&

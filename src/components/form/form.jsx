@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./form.scss";
 import ApiClient from "../../services/api-client";
 import ErrorView from "../modals/error/error-view";
@@ -10,14 +10,18 @@ import { pushStorageArray } from "../utils/set-storage-item";
 const liSuggestionClass = "list-group-item bg-dark text-white suggestion-item";
 const apiClient = ApiClient.getInstance();
 
-function GuessForm({ submitFunction, isDisabled, storageItemName }) {
+function GuessForm({ submitFunction, isDisabled, previousGuessesStorageName }) {
   const [input, setInput] = useState("");
   const [availableCountries, setAvailableCountries] = useState([]);
-  const [countries, error, setError] = useApiData("/data/countries");
+  const [suggestions, setSuggestions] = useState([]);
+  const [shouldSubmit, setShouldSubmit] = useState(false);
+  const [countries, error] = useApiData("/data/countries");
 
   useEffect(() => {
     let usedCountries;
-    const usedCountriesStorage = localStorage.getItem(storageItemName);
+    const usedCountriesStorage = localStorage.getItem(
+      previousGuessesStorageName
+    );
     if (usedCountriesStorage) {
       usedCountries = JSON.parse(usedCountriesStorage);
     }
@@ -28,18 +32,27 @@ function GuessForm({ submitFunction, isDisabled, storageItemName }) {
       );
   }, [countries]);
 
+  useEffect(() => {
+    setSuggestions(filterCountriesByName(input, availableCountries));
+  }, [input]);
+
+  useEffect(() => {
+    if (shouldSubmit && suggestions[0].name === input) {
+      document.getElementById("guess-form").requestSubmit();
+      setShouldSubmit(false);
+    }
+  }, [suggestions, shouldSubmit]);
+
   if (error) return <ErrorView error={error} />;
   if (!countries) return <Loader />;
-
-  const filteredCountries = filterCountriesByName(input, availableCountries);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (filteredCountries.length > 0 && input) {
-      const selectedCountry = filteredCountries[0];
+    if (suggestions.length > 0 && input) {
+      const selectedCountry = suggestions[0];
       submitFunction(selectedCountry);
-      pushStorageArray(storageItemName, selectedCountry.name);
+      pushStorageArray(previousGuessesStorageName, selectedCountry.name);
       setAvailableCountries((prev) =>
         prev.filter((country) => country !== selectedCountry)
       );
@@ -72,14 +85,14 @@ function GuessForm({ submitFunction, isDisabled, storageItemName }) {
 
       {input && (
         <ul className="suggestions list-group">
-          {filteredCountries.length > 0 ? (
-            filteredCountries.map((country) => (
+          {suggestions.length > 0 ? (
+            suggestions.map((country) => (
               <li
                 key={country.name}
                 className={liSuggestionClass}
-                onClick={(e) => {
+                onClick={() => {
                   setInput(country.name);
-                  e.currentTarget.closest("form").requestSubmit();
+                  setShouldSubmit(true);
                 }}
               >
                 {country.name}
