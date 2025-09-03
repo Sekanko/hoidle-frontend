@@ -34,13 +34,6 @@ function Classic() {
   useEffect(() => {
     const savedRows = localStorage.getItem(storageItems.CLASSIC_ROWS);
     const savedHasWon = localStorage.getItem(storageItems.CLASSIC_HAS_WON);
-    const savedPlayDate = localStorage.getItem(storageItems.PLAY_DATE);
-
-    if (savedPlayDate && !isDateSameInWarsaw(savedPlayDate)) {
-      Object.values(storageItems).forEach((item) =>
-        localStorage.removeItem(item)
-      );
-    }
 
     if (savedRows) setRows(JSON.parse(savedRows));
     if (savedHasWon) setHasWon(JSON.parse(savedHasWon));
@@ -49,7 +42,6 @@ function Classic() {
   useEffect(() => {
     if (rows.length > 0) {
       setStorageItem(storageItems.CLASSIC_ROWS, rows);
-      setStorageItem(storageItems.PLAY_DATE, getDateFromWarsaw());
     }
     if (hasWon) {
       setStorageItem(storageItems.CLASSIC_HAS_WON, hasWon);
@@ -95,7 +87,6 @@ function Classic() {
 
   return (
     <article className="text-center d-flex flex-column align-items-center mx-auto">
-      <button onClick={() => localStorage.clear()}>Wyczyść localStorage</button>
       <GuessForm
         submitFunction={handleSubmit}
         isDisabled={formDisabled}

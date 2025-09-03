@@ -7,6 +7,8 @@ import Loader from "../modals/loader/loader";
 import ErrorView from "../modals/error/error-view";
 import ApiClient from "../../services/api-client";
 import useApiData from "../../hooks/use-api-data";
+import { storageItems } from "../utils/constants/storage-item-names";
+import { setStorageItem } from "../utils/set-storage-item";
 
 const apiClient = ApiClient.getInstance();
 
@@ -17,6 +19,23 @@ function Borders() {
     "/data/dailyBorderUrl",
     (countryImgUrl) => `/borders-img/${countryImgUrl}`
   );
+
+  useEffect(() => {
+    const savedGuesses = localStorage.getItem(storageItems.BORDER_GUESSES);
+    const savedHasWon = localStorage.getItem(storageItems.BORDER_HAS_WON);
+
+    if (savedGuesses) setGuesses(JSON.parse(savedGuesses));
+    if (savedHasWon) setHasWon(JSON.parse(savedHasWon));
+  }, []);
+
+  useEffect(() => {
+    if (guesses.length > 0) {
+      setStorageItem(storageItems.BORDER_GUESSES, guesses);
+    }
+    if (hasWon) {
+      setStorageItem(storageItems.BORDER_HAS_WON, hasWon);
+    }
+  }, [guesses, hasWon]);
 
   if (error) return <ErrorView error={error} />;
   if (!imageSrc) return <Loader />;
@@ -46,7 +65,11 @@ function Borders() {
           alt="Something went wrong :("
         />
       </div>
-      <GuessForm submitFunction={submitHandler} isDisabled={hasWon} />
+      <GuessForm
+        submitFunction={submitHandler}
+        isDisabled={hasWon}
+        storageItemName={storageItems.BORDER_GUESSES}
+      />
       <div id="guess-container-border">
         {guesses.length > 0 &&
           guesses.map((country, index) => (
