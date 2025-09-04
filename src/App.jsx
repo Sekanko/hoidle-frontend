@@ -14,7 +14,7 @@ import { storageItems } from "./components/utils/constants/storage-item-names";
 function App() {
   useEffect(() => {
     const date = localStorage.getItem(storageItems.PLAY_DATE);
-    if (date && !isDateSameInWarsaw(date)) {
+    if (!date || !isDateSameInWarsaw(date)) {
       resetStorageAndSetUpNewPlayDate();
     }
     const scheduleReset = () => {
