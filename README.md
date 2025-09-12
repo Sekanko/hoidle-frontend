@@ -1,12 +1,14 @@
-# React + Vite
+# Hoidle Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of my **Hoidle** project, built with React and JavaScript.  
+Hoidle is based on data from the game *Hearts of Iron IV*.
 
-Currently, two official plugins are available:
+## Classic Mode
+Guess the country using the feedback from your previous attempts:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Red** → incorrect  
+- **Orange** → partly correct  
+- **Green** → correct  
 
-## Expanding the ESLint configuration
+Go ahead and [try it out](https://hoidle.netlify.app) — please note that the server may take up to **2 minutes** to start after the first request.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
